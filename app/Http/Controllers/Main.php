@@ -11,4 +11,11 @@ class Main extends Controller
     {
         echo 'Task Manager';
     }
+
+    public function login() {
+        $data = [
+            'title' => 'Login'
+        ];
+        return view('login_frm', $data);
+    }
 }
