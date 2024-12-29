@@ -4,8 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UsersModel extends Model
+class UserModel extends Model
 {
-    // use HasFactory;
     protected $table = 'users';
 }
