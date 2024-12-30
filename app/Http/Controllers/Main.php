@@ -12,10 +12,25 @@ class Main extends Controller
         echo 'Task Manager';
     }
 
-    public function login() {
+    // login
+    public function login()
+    {
         $data = [
             'title' => 'Login'
         ];
         return view('login_frm', $data);
+    }
+
+    public function login_submit()
+    {
+        echo 'Login submit';
+    }
+
+    // main page
+    public function main() {
+        $data = [
+            'title' => 'Main'
+        ];
+        return view('main', $data);
     }
 }

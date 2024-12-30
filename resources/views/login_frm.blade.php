@@ -6,6 +6,7 @@
         <h2 class="text-center">Login</h2>
         <hr>
         <form action="{{ route('login_submit') }}" method="post">
+            @csrf
             <div class="mb-3">
                 <label for="text_username" class="form-label">Username</label>
                 <input type="text" name="text_username" id="text_username" class="form-control" placeholder="Username" required>
