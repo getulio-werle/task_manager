@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <div class="row">
+            <div class="row align-items-center">
                 <div class="col">
                     <h1><i class="bi bi-list-task me-3"></i>Tasks</h1>
                 </div>

@@ -38,9 +38,9 @@ class Main extends Controller
             'text_password' => 'required|min:3'
         ], [
             'text_username.required' => 'The field is mandatory',
-            'text_username.min' => 'The field must have at least 3 characters',
+            'text_username.min' => 'The field must have at least :min characters',
             'text_password.required' => 'The field is mandatory',
-            'text_password.min' => 'The field must have at least 3 characters'
+            'text_password.min' => 'The field must have at least :min characters'
         ]);
         // get login data
         $username = $request->input('text_username');
@@ -69,19 +69,51 @@ class Main extends Controller
     // ===============================
     // new task
     // ===============================
-    public function new_task() {
+    public function new_task()
+    {
         $data = [
             'title' => 'New task'
         ];
         return view('new_task_frm', $data);
     }
-    public function new_task_submit() {
-        echo 'new task submit';
+    public function new_task_submit(Request $request)
+    {
+        // form validation
+        $request->validate([
+            'text_task_name' => 'required|min:3|max:200',
+            'text_task_description' => 'required|min:3|max:1000'
+        ], [
+            'text_task_name.required' => 'The field is mandatory',
+            'text_task_name.min' => 'The field must have at least :min characters',
+            'text_task_name.max' => 'The field must have a maximum of :max characters',
+            'text_task_description.required' => 'The field is mandatory',
+            'text_task_description.min' => 'The field must have at least :min characters',
+            'text_task_description.max' => 'The field must have a maximum of :max characters'
+        ]);
+        // get form data
+        $task_name = $request->input('text_task_name');
+        $task_description = $request->input('text_task_description');
+        // check if there is already another task with the same name for the same user
+        $model = new TaskModel();
+        $task = $model->where('id_user', '=', session('id'))->where('task_name', '=', $task_name)->whereNull('deleted_at')->first();
+        if ($task) {
+            return redirect()->route('new_task')->withInput()->with('task_error', 'Already exists another task with the same name');
+        }
+        // insert new task
+        $model->id_user = session('id');
+        $model->task_name = $task_name;
+        $model->task_description = $task_description;
+        $model->task_status = 'new';
+        $model->created_at = date('Y-m-d H:i:s');
+        $model->save();
+        // success, redirect to index
+        return redirect()->route('index');
     }
     // ===============================
     // private methods
     // ===============================
-    private function _get_tasks() {
+    private function _get_tasks()
+    {
         $model = new TaskModel();
         return $model->where('id_user', '=', session()->get('id'))->whereNull('deleted_at')->get();
     }
