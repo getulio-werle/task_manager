@@ -2,22 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TaskModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class Main extends Controller
 {
+    // ===============================
     // main page
+    // ===============================
     public function index()
     {
         $data = [
-            'title' => 'Main'
+            'title' => 'Main',
+            'tasks' => $this->_get_tasks()
         ];
         return view('main', $data);
     }
-
+    // ===============================
     // login
+    // ===============================
     public function login()
     {
         $data = [
@@ -25,7 +30,6 @@ class Main extends Controller
         ];
         return view('login_frm', $data);
     }
-
     public function login_submit(Request $request)
     {
         // form validation
@@ -54,11 +58,31 @@ class Main extends Controller
         }
         return redirect()->route('login')->withInput()->with('login_error', 'Invalid login');
     }
-
+    // ===============================
     // logout
+    // ===============================
     public function logout()
     {
         session()->forget('username');
         return redirect()->route('login');
+    }
+    // ===============================
+    // new task
+    // ===============================
+    public function new_task() {
+        $data = [
+            'title' => 'New task'
+        ];
+        return view('new_task_frm', $data);
+    }
+    public function new_task_submit() {
+        echo 'new task submit';
+    }
+    // ===============================
+    // private methods
+    // ===============================
+    private function _get_tasks() {
+        $model = new TaskModel();
+        return $model->where('id_user', '=', session()->get('id'))->whereNull('deleted_at')->get();
     }
 }

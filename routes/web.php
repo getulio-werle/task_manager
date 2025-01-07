@@ -15,4 +15,7 @@ Route::middleware([CheckLogout::class])->group(function () {
 Route::middleware([CheckLogin::class])->group(function () {
     Route::get('/', [Main::class, 'index'])->name('index');
     Route::get('/logout', [Main::class, 'logout'])->name('logout');
+    // new task
+    Route::get('/new_task', [Main::class, 'new_task'])->name('new_task');
+    Route::post('/new_task_submit', [Main::class, 'new_task_submit'])->name('new_task_submit');
 });
