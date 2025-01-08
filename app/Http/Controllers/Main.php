@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\TaskModel;
 use App\Models\UserModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
 class Main extends Controller
@@ -111,6 +112,17 @@ class Main extends Controller
         return redirect()->route('index');
     }
     // ===============================
+    // new task
+    // ===============================
+    public function edit_task ($id) {
+        try {
+            $id = Crypt::decrypt($id);
+        } catch (\Exception $e) {
+            return redirect()->route('index');
+        }
+        var_dump($id);
+    }
+    // ===============================
     // private methods
     // ===============================
     private function _get_tasks()
@@ -119,8 +131,8 @@ class Main extends Controller
         $tasks = $model->where('id_user', '=', session()->get('id'))->whereNull('deleted_at')->get();
         $collection = [];
         foreach ($tasks as $task) {
-            $link_edit = '<a href="' . route('edit_task', ['id' => $task->id]) . '" class="btn btn-warning m-1"><i class="bi bi-pencil-square"></i></a>';
-            $link_delete = '<a href="' . route('delete_task', ['id' => $task->id]) . '" class="btn btn-danger m-1"><i class="bi bi-trash"></i></a>';
+            $link_edit = '<a href="' . route('edit_task', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-warning m-1"><i class="bi bi-pencil-square"></i></a>';
+            $link_delete = '<a href="' . route('delete_task', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-danger m-1"><i class="bi bi-trash"></i></a>';
             $collection[] = [
                 'task_name' => $task->task_name,
                 'task_status' => $task->task_status,
