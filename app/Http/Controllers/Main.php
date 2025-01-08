@@ -16,6 +16,7 @@ class Main extends Controller
     {
         $data = [
             'title' => 'Main',
+            'datatables' => true,
             'tasks' => $this->_get_tasks()
         ];
         return view('main', $data);
@@ -115,6 +116,17 @@ class Main extends Controller
     private function _get_tasks()
     {
         $model = new TaskModel();
-        return $model->where('id_user', '=', session()->get('id'))->whereNull('deleted_at')->get();
+        $tasks = $model->where('id_user', '=', session()->get('id'))->whereNull('deleted_at')->get();
+        $collection = [];
+        foreach ($tasks as $task) {
+            $link_edit = '<a href="' . route('edit_task', ['id' => $task->id]) . '" class="btn btn-warning m-1"><i class="bi bi-pencil-square"></i></a>';
+            $link_delete = '<a href="' . route('delete_task', ['id' => $task->id]) . '" class="btn btn-danger m-1"><i class="bi bi-trash"></i></a>';
+            $collection[] = [
+                'task_name' => $task->task_name,
+                'task_status' => $task->task_status,
+                'task_actions' => $link_edit . $link_delete
+            ];
+        }
+        return $collection;
     }
 }

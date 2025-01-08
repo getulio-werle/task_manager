@@ -12,25 +12,17 @@
                 </div>
             </div>
             <hr>
-            @if($tasks->count() != 0)
+            @if(count($tasks) != 0)
                 <!-- table -->
-                <table class="table table-striped">
+                <table class="table table-striped" id="table_tasks">
                     <thead>
                         <tr>
-                            <th class="w-50">Task name</th>
-                            <th class="w-25">Status</th>
+                            <th class="w-75">Task name</th>
+                            <th>Status</th>
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach ($tasks as $task)
-                            <tr>
-                                <td>{{ $task->task_name }}</td>
-                                <td>{{ $task->task_status }}</td>
-                                <td>[actions]</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             @else
                 <!-- message if not exists registered tasks -->
@@ -39,4 +31,18 @@
         </div>
     </div>
 </div>
+<script>
+    // DataTables
+    $(document).ready(function() {
+        $('#table_tasks').DataTable({
+            data: @json($tasks),
+            columns: [
+                { data: 'task_name' },
+                { data: 'task_status', className: 'text-center' },
+                { data: 'task_actions', className: 'text-center' }
+            ]
+        });
+    });
+</script>
+
 @endsection
