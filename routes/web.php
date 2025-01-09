@@ -20,7 +20,7 @@ Route::middleware([CheckLogin::class])->group(function () {
     Route::post('/new_task_submit', [Main::class, 'new_task_submit'])->name('new_task_submit');
     // edit task
     Route::get('/edit_task/{id}', [Main::class, 'edit_task'])->name('edit_task');
-    Route::post('/edit_task_submit/{id}', [Main::class, 'edit_task_submit'])->name('edit_task_submit');
+    Route::post('/edit_task_submit', [Main::class, 'edit_task_submit'])->name('edit_task_submit');
     // delete task
     Route::get('/delete_task/{id}', [Main::class, 'delete_task'])->name('delete_task');
     Route::post('/delete_task_confirm/{id}', [Main::class, 'delete_task_confirm'])->name('delete_task_confirm');
