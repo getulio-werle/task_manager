@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h2>New task</h2>
+            <h2><i class="bi bi-plus-lg me-2"></i>New task</h2>
             <hr>
             <form action="{{ route('new_task_submit') }}" method="post">
                 @csrf

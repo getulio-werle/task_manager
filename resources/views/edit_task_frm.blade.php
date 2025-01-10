@@ -3,7 +3,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h2>Edit task</h2>
+            <h2><i class="bi bi-pencil-square me-2"></i>Edit task</h2>
             <hr>
             <form action="{{ route('edit_task_submit') }}" method="post">
                 @csrf

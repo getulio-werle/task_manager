@@ -179,7 +179,43 @@ class Main extends Controller
                 'task_status' => $task_status,
                 'updated_at' => date('Y-m-d H:i:s')
             ]);
+        return redirect()->route('index');
+    }
+    // ===============================
+    // delete task
+    // ===============================
+    public function delete_task($id)
+    {
+        try {
+            $task_id = Crypt::decrypt($id);
+        } catch (\Exception $e) {
             return redirect()->route('index');
+        }
+        $model = new TaskModel();
+        $task = $model->where('id', '=', $task_id)->first();
+        if (!$task) {
+            return redirect()->route('index');
+        }
+        $data = [
+            'title' => 'Delete task',
+            'task' => $task
+        ];
+        return view('delete_task', $data);
+    }
+    public function delete_task_confirm($id)
+    {
+        try {
+            $task_id = Crypt::decrypt($id);
+        } catch (\Exception $e) {
+            return redirect()->route('index');
+        }
+        // delete task (soft delete)
+        $model = new TaskModel();
+        $model->where('id', '=', $task_id)
+            ->update([
+                'deleted_at' => date('Y-m-d H:i:s')
+            ]);
+        return redirect()->route('index');
     }
     // ===============================
     // private methods
