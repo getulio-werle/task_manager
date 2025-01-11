@@ -14,7 +14,7 @@
             <hr>
             @if(count($tasks) != 0)
                 <!-- table -->
-                <table class="table table-striped" id="table_tasks">
+                <table class="table table-dark table-striped" id="table_tasks">
                     <thead>
                         <tr>
                             <th class="w-75">Task name</th>
@@ -37,9 +37,9 @@
         $('#table_tasks').DataTable({
             data: @json($tasks),
             columns: [
-                { data: 'task_name' },
-                { data: 'task_status', className: 'text-center' },
-                { data: 'task_actions', className: 'text-center' }
+                { data: 'task_name', className: 'align-middle' },
+                { data: 'task_status', className: 'text-center align-middle' },
+                { data: 'task_actions', className: 'text-center align-middle' }
             ]
         });
     });

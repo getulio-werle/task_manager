@@ -229,7 +229,7 @@ class Main extends Controller
             $link_edit = '<a href="' . route('edit_task', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-warning m-1"><i class="bi bi-pencil-square"></i></a>';
             $link_delete = '<a href="' . route('delete_task', ['id' => Crypt::encrypt($task->id)]) . '" class="btn btn-danger m-1"><i class="bi bi-trash"></i></a>';
             $collection[] = [
-                'task_name' => $task->task_name,
+                'task_name' => '<b>' . $task->task_name . '</b><br><span class="opacity-50">' . $task->task_description . '</span>',
                 'task_status' => $this->_get_status_name($task->task_status),
                 'task_actions' => $link_edit . $link_delete
             ];
@@ -245,9 +245,23 @@ class Main extends Controller
             'completed' => 'Completed'
         ];
         if (key_exists($status, $status_collection)) {
-            return $status_collection[$status];
+            return '<span class="' . $this->_get_status_badge($status) . '">' . $status_collection[$status] . '</span>';
         } else {
-            return 'Unknown';
+            return '<span class="' . $this->_get_status_badge($status) . '">Unknown</span>';
+        }
+    }
+    private function _get_status_badge($status)
+    {
+        $badge_collection = [
+            'new' => 'badge bg-primary',
+            'in_progress' => 'badge bg-info',
+            'cancelled' => 'badge bg-danger',
+            'completed' => 'badge bg-success'
+        ];
+        if (key_exists($status, $badge_collection)) {
+            return $badge_collection[$status];
+        } else {
+            return 'badge bg-secondary';
         }
     }
 }
